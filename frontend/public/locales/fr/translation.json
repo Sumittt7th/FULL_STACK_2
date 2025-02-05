@@ -1,0 +1,17 @@
+{
+    "navbar": {
+      "home": "Accueil",
+      "about": "À propos",
+      "contact": "Contact",
+      "dashboard": "Tableau de bord",
+      "login": "Se connecter",
+      "logout": "Se déconnecter",
+      "myWebsite": "MonSiteWeb",
+      "tokenGenerated": "Jeton généré"
+    },
+    "theme": {
+      "lightMode": "Mode clair",
+      "darkMode": "Mode sombre"
+    }
+  }
+  

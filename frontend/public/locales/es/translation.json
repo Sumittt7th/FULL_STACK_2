@@ -1,0 +1,17 @@
+{
+    "navbar": {
+      "home": "Inicio",
+      "about": "Acerca de",
+      "contact": "Contacto",
+      "dashboard": "Tablero",
+      "login": "Iniciar sesión",
+      "logout": "Cerrar sesión",
+      "myWebsite": "MiSitioWeb",
+      "tokenGenerated": "Token generado"
+    },
+    "theme": {
+      "lightMode": "Modo claro",
+      "darkMode": "Modo oscuro"
+    }
+  }
+  

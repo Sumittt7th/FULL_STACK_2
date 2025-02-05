@@ -1,0 +1,17 @@
+{
+    "navbar": {
+      "home": "Home",
+      "about": "About",
+      "contact": "Contact",
+      "dashboard": "Dashboard",
+      "login": "Login",
+      "logout": "Logout",
+      "myWebsite": "MyWebsite",
+      "tokenGenerated": "Token generated"
+    },
+    "theme": {
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
+    }
+  }
+  
