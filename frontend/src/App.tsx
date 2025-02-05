@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from './store/store';
 import HomePage from './pages/homepage';
 import AboutPage from './pages/about';
@@ -21,13 +21,8 @@ const AllUsers = React.lazy(() => import('./pages/alluser'));
 const ChangePassword = React.lazy(() => import('./pages/changepassword'));
 
 function App() {
-  
   const { role } = useAppSelector((state) => state.auth);
-  const authData = useAppSelector((store) => store.auth);
-  const isAuthenticated = useMemo(() => {
-    return authData.isAuthenticated || false; 
-  }, [authData]);
-  
+
   return (
     <>
       <AnimatePresence mode='wait'>
@@ -45,47 +40,19 @@ function App() {
           </Route>
 
           {/* Protected Routes */}
-          <Route path='/' element={<Layout allowedRoles={['ADMIN', 'USER']} />}>
-            <Route
-              path='dashboard'
-              element={
-                <LazyComponent>
-                  {role === 'ADMIN' ? <AdminDashboard /> : <UserDashboard />}
-                </LazyComponent>
-              }
-            />
-            <Route
-              path='profile'
-              element={
-                <LazyComponent>
-                  <Profile />
-                </LazyComponent>
-              }
-            />
-            <Route
-              path='editUser'
-              element={
-                <LazyComponent>
-                  <EditUser />
-                </LazyComponent>
-              }
-            />
-            <Route
-              path='users'
-              element={
-                <LazyComponent>
-                  <AllUsers />
-                </LazyComponent>
-              }
-            />
-            <Route
-              path='changePassword'
-              element={
-                <LazyComponent>
-                  <ChangePassword />
-                </LazyComponent>
-              }
-            />
+          <Route
+            path='/'
+            element={
+              <LazyComponent>
+                <Layout allowedRoles={['ADMIN', 'USER']} />
+              </LazyComponent>
+            }
+          >
+            <Route path='dashboard' element={role === 'ADMIN' ? <AdminDashboard /> : <UserDashboard />}/>
+            <Route path='profile' element={<Profile />} />
+            <Route path='editUser' element={<EditUser />} />
+            <Route path='users' element={<AllUsers />} />
+            <Route path='changePassword' element={<ChangePassword />} />
           </Route>
         </Routes>
       </AnimatePresence>
