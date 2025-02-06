@@ -20,6 +20,9 @@ This is a full-stack web application built using the **MERN stack** (MongoDB, Ex
 - **Language Switcher**: The frontend supports dynamic language switching.
 
 ---
+### Commisons on Transaction and Withdraws
+- ** International**: 10
+- ** Local **: 5
 
 ## Table of Contents
 1. [Technologies Used](#technologies-used)
