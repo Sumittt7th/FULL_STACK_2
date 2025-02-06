@@ -83,6 +83,12 @@ const UserProfile: React.FC = () => {
               </Typography>
               <Typography variant="body1">{user.role}</Typography>
             </Box>
+            <Box mb={2}>
+              <Typography variant="h6" color="textSecondary">
+                Balance:
+              </Typography>
+              <Typography variant="body1">{user.walletBalance}</Typography>
+            </Box>
 
             <motion.div variants={updatedTextAnimation} initial="hidden" animate="show" exit="exit">
               <Button

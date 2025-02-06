@@ -12,11 +12,13 @@ import * as Icons from "@mui/icons-material";
 const sidebarItems = {
   ADMIN: [
     { label: "All Users", path: "/users", icon: "People" },
+    { label: "All Approvals", path: "/approvals", icon: "Security" },
     { label: "Profile", path: "/profile", icon: "AccountCircle" },
     { label: "Security", path: "/changePassword", icon: "Security" },
   ],
   USER: [
     { label: "Profile", path: "/profile", icon: "AccountCircle" },
+    { label: "Transaction", path: "/transaction", icon: "AccountCircle" },
     { label: "Security", path: "/changePassword", icon: "Security" },
   ],
 };

@@ -3,15 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import authReducer from "./reducers/authReducer";
 import { apiAuth } from "../services/auth.api";
 import { apiUser } from "../services/user.api";
+import { apiTransaction } from '../services/transaction.api';
+import { apiApproval } from '../services/approval.api';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     [apiAuth.reducerPath]: apiAuth.reducer,
     [apiUser.reducerPath]: apiUser.reducer,
+    [apiTransaction.reducerPath]: apiTransaction.reducer,
+    [apiApproval.reducerPath]: apiApproval.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiAuth.middleware,apiUser.middleware),
+    getDefaultMiddleware().concat(apiAuth.middleware,apiUser.middleware,apiTransaction.middleware,apiApproval.middleware),
 });
 
 

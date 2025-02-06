@@ -5,7 +5,7 @@ import { resetTokens } from "../../store/reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../services/user.api";
 import { toast } from "react-toastify";
-import { NavLink } from "react-router-dom";
+import { NavLink,Outlet } from "react-router-dom";
 import { ThemeContext } from "../../ThemeContext";
 import { MdSunny } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
@@ -38,6 +38,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
+    <>
     <AppBar position="sticky" color={mode === "light" ? "default" : "primary"}>
       <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
@@ -100,6 +101,8 @@ const Navbar: React.FC = () => {
         </Grid>
       </Toolbar>
     </AppBar>
+    <Outlet />
+    </>
   );
 };
 

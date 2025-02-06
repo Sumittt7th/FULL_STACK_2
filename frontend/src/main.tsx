@@ -20,7 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeContextProvider>
         <Provider store={store}>
           <ToastContainer />
-          <Navbar/>
           <App />
         </Provider>
         </ThemeContextProvider>

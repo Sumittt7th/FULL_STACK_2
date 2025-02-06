@@ -9,7 +9,7 @@ import { isAuthenticated } from '../common/middleware/isAuthenticate.middleware'
 const router = Router();
 
 router
-  .get("/",isAuthenticated,roleAuth("ADMIN"), userController.getAllUser)
+  .get("/",isAuthenticated, userController.getAllUser)
   .get("/:id",isAuthenticated, userController.getUserById)
   .delete("/:id",isAuthenticated, userController.deleteUser)
   .post("/", userValidator.createUser, catchError, userController.createUser)

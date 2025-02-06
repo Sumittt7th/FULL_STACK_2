@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../layouts/sidebar"; // Path to your Sidebar component
 import { useAppSelector } from "../store/store";
+import LazyComponent from '../components/LazyComponent';
 
 interface LayoutProps {
   allowedRoles: string[]; // You pass allowed roles as props
@@ -26,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ allowedRoles }) => {
   }
 
   return (
+    <LazyComponent>
     <Box sx={{ display: "flex" }}>
       <Sidebar role={role} />
       <Box
@@ -41,6 +43,7 @@ const Layout: React.FC<LayoutProps> = ({ allowedRoles }) => {
         <Outlet />
       </Box>
     </Box>
+    </LazyComponent>
   );
 };
 

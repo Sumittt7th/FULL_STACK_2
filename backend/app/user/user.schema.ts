@@ -17,10 +17,11 @@ const UserSchema = new Schema<IUser>({
         role: { type: String, required: true, enum: ["USER", "ADMIN"], default: "USER" },
         password: { type: String, required: true },
         refToken: {type:String,required:false},
+        walletBalance: { type: Number, required: true, default: 0 },
 }, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
-        if (this.password) {
+        if (this.isModified("password")) {
                 this.password = await hashPassword(this.password);
         }
         next();
