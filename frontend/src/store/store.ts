@@ -5,6 +5,7 @@ import { apiAuth } from "../services/auth.api";
 import { apiUser } from "../services/user.api";
 import { apiTransaction } from '../services/transaction.api';
 import { apiApproval } from '../services/approval.api';
+import { apiCommission } from '../services/commisions.api';
 
 export const store = configureStore({
   reducer: {
@@ -13,9 +14,10 @@ export const store = configureStore({
     [apiUser.reducerPath]: apiUser.reducer,
     [apiTransaction.reducerPath]: apiTransaction.reducer,
     [apiApproval.reducerPath]: apiApproval.reducer,
+    [apiCommission.reducerPath]: apiCommission.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiAuth.middleware,apiUser.middleware,apiTransaction.middleware,apiApproval.middleware),
+    getDefaultMiddleware().concat(apiAuth.middleware,apiUser.middleware,apiTransaction.middleware,apiApproval.middleware,apiCommission.middleware),
 });
 
 

@@ -5,6 +5,7 @@ import {
   useUpdateApprovalMutation,
 } from "../../services/approval.api";
 import { useUpdateTransactionMutation } from "../../services/transaction.api";
+import { useCreateCommissionMutation } from "../../services/commisions.api"; // Importing the mutation for commission
 import {
   IconButton,
   Typography,
@@ -21,12 +22,14 @@ import { toast } from "react-toastify";
 import { CheckCircle, Cancel, AccountBalanceWallet } from "@mui/icons-material";
 
 const ApprovalPage: React.FC = () => {
-  const { data: approvals, isLoading,refetch } = useGetAllApprovalsQuery();
+  const { data: approvals, isLoading, refetch } = useGetAllApprovalsQuery();
   const [checkBalance] = useCheckBalanceMutation();
   const [updateApproval] = useUpdateApprovalMutation();
   const [updateTransaction] = useUpdateTransactionMutation();
+  const [createCommission] = useCreateCommissionMutation(); // Hook for creating commission
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
+  // Handle balance check for a user and transaction
   const handleBalanceCheck = async (userId: string, txnId: string, approvalId: string) => {
     try {
       setLoadingId(approvalId);
@@ -41,17 +44,36 @@ const ApprovalPage: React.FC = () => {
     }
   };
 
-  const handleApprove = async (approvalId: string, txnId: string) => {
+  // Handle approval of a transaction
+  const handleApprove = async (approvalId: string, txnId: string, userId: string) => {
     try {
       await updateApproval({ id: approvalId, status: "APPROVED" }).unwrap();
       await updateTransaction({ id: txnId, status: "APPROVED" }).unwrap();
-      toast.success("Transaction Approved!");
+      
+      // Calculate commission amount based on international or national transaction
+      const transaction = approvals?.data?.find((approval) => approval._id === approvalId)?.txnId;
+      if (!transaction) {
+        toast.error("Transaction not found!");
+        return;
+      }
+      
+      const commissionAmount = transaction.isInternational ? 10 : 5; // 10 for international, 5 for national
+      
+      // Create the commission record
+      await createCommission({
+        userId,
+        txnId,
+        commissionAmount,
+      }).unwrap();
+      
+      toast.success("Transaction Approved and Commission Created!");
       refetch();
     } catch (error) {
       toast.error("Failed to approve the transaction!");
     }
   };
 
+  // Handle rejection of a transaction
   const handleReject = async (approvalId: string, txnId: string) => {
     try {
       await updateApproval({ id: approvalId, status: "REJECTED" }).unwrap();
@@ -104,7 +126,7 @@ const ApprovalPage: React.FC = () => {
                         <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 1 }}>
                           <IconButton
                             color="success"
-                            onClick={() => handleApprove(approval._id, approval.txnId._id)}
+                            onClick={() => handleApprove(approval._id, approval.txnId._id, approval.userId._id)}
                             sx={{ padding: "4px" }}
                           >
                             <CheckCircle style={{ fontSize: 24 }} />
