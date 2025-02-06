@@ -119,15 +119,23 @@ const Dashboard: React.FC = () => {
                       <TableBody>
   {recentTransactions.map((txn: any) => {
     const isSender = txn.userId?._id === userId;
+    const isReceiver = txn.receiverId?._id === userId;
     const transactionWith = isSender
       ? txn.receiverId?.name || "N/A"
       : txn.userId?.name || "N/A";
 
-    const isNegative = txn.type === "TRANSFER" || txn.type === "WITHDRAW";
-    const formattedAmount = isNegative
-      ? `- ₹${txn.amount}`
-      : `+ ₹${txn.amount}`;
-    const amountColor = isNegative ? "red" : "green";
+    let amountColor = "black"; // Default color for pending/rejected
+    let formattedAmount = `₹${txn.amount}`;
+
+    if (txn.status === "APPROVED") {
+      if (isSender && (txn.type === "TRANSFER" || txn.type === "WITHDRAW")) {
+        formattedAmount = `- ₹${txn.amount}`;
+        amountColor = "red";
+      } else if (isReceiver || txn.type === "DEPOSIT") {
+        formattedAmount = `+ ₹${txn.amount}`;
+        amountColor = "green";
+      }
+    }
 
     return (
       <TableRow key={txn._id}>
@@ -148,6 +156,7 @@ const Dashboard: React.FC = () => {
     );
   })}
 </TableBody>
+
 
                     </Table>
                   </TableContainer>

@@ -156,7 +156,7 @@ const TransactionForm: React.FC = () => {
 
             <motion.div variants={inputVariants}>
               <TextField
-                label="Receiver ID (Optional)"
+                label="Receiver ID"
                 type="text"
                 fullWidth
                 variant="outlined"
