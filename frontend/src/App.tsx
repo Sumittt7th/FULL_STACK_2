@@ -22,6 +22,7 @@ const ChangePassword = React.lazy(() => import('./pages/changepassword'));
 const Transaction = React.lazy(() => import('./pages/transaction'))
 const AllApprovals = React.lazy(() => import('./pages/allapproval'))
 const AllTransactions = React.lazy(() => import('./pages/alltransactions'))
+const AllCommissons = React.lazy(() => import('./pages/allcommisons'))
 
 function App() {
   const { role } = useAppSelector((state) => state.auth);
@@ -60,6 +61,7 @@ function App() {
             <Route path='changePassword' element={<ChangePassword />} />
             <Route path='approvals' element={<AllApprovals />} />
             <Route path='all_transactions' element={<AllTransactions />} />
+            <Route path='commisons' element={<AllCommissons />} />
           </Route>
           </Route>
         </Routes>

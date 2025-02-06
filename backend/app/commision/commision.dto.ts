@@ -3,7 +3,7 @@ import { BaseSchema } from "../common/dto/base.dto";
 
 export interface ICommission extends BaseSchema {
   userId: string | ObjectId;
-  transactionId: string | ObjectId;
+  txnId: string | ObjectId;
   commissionAmount: number;
 }
 

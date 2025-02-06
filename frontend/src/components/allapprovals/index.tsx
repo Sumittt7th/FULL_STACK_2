@@ -57,13 +57,20 @@ const ApprovalPage: React.FC = () => {
         return;
       }
       
+      // If transaction type is DEPOSIT, do not create commission
+      if (transaction.type === "DEPOSIT") {
+        toast.success("Transaction Approved (Deposit)!");
+        refetch();
+        return;
+      }
+      
       const commissionAmount = transaction.isInternational ? 10 : 5; // 10 for international, 5 for national
       
       // Create the commission record
       await createCommission({
-        userId,
-        txnId,
-        commissionAmount,
+        userId: userId,
+        txnId: txnId,
+        commissionAmount: commissionAmount,
       }).unwrap();
       
       toast.success("Transaction Approved and Commission Created!");
@@ -72,6 +79,7 @@ const ApprovalPage: React.FC = () => {
       toast.error("Failed to approve the transaction!");
     }
   };
+  
 
   // Handle rejection of a transaction
   const handleReject = async (approvalId: string, txnId: string) => {

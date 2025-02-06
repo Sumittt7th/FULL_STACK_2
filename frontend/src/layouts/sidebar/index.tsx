@@ -13,6 +13,7 @@ const sidebarItems = {
   ADMIN: [
     { label: "All Users", path: "/users", icon: "People" },
     { label: "All Approvals", path: "/approvals", icon: "CheckCircle" },
+    { label: "All Commisons", path: "/commisons", icon: "AttachMoney" },
     { label: "Profile", path: "/profile", icon: "AccountCircle" },
     { label: "Security", path: "/changePassword", icon: "Security" },
   ],

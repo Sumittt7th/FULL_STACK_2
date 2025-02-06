@@ -14,6 +14,6 @@ export const createCommission = async (data: ICommission) => {
  * Gets all commissions.
  */
 export const getAllCommissions = async () => {
-  const result = await CommissionModel.find().populate("userId").populate("transactionId").sort({ createdAt: -1 }).lean();
+  const result = await CommissionModel.find().populate("userId").populate("txnId").sort({ createdAt: -1 }).lean();
   return result;
 };
