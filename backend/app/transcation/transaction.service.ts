@@ -49,7 +49,7 @@ export const updateTransaction = async (id: string, data: Partial<ITransaction>)
     // Only calculate commission if it's not a deposit
     if (transaction.type !== 'DEPOSIT') {
       commissionAmount = transaction.isInternational ? INTERNATIONAL_COMMISSION : LOCAL_COMMISSION;
-      transaction.commissionAmount = commissionAmount; // ✅ This will now persist
+      transaction.commissionAmount = commissionAmount; 
     }
 
     const sender = await UserModel.findById(transaction.userId);
@@ -71,7 +71,7 @@ export const updateTransaction = async (id: string, data: Partial<ITransaction>)
       await receiver.save();
     }
 
-    await transaction.save(); // ✅ Save the updated transaction (including commissionAmount)
+    await transaction.save(); 
   }
 
   // Update the transaction in the database and return the updated transaction

@@ -2,17 +2,17 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { 
-  Container, TextField, Button, Typography, Paper, MenuItem, useTheme 
-} from "@mui/material";
+import { Container, TextField, Button, Typography, Paper, MenuItem, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useCreateTransactionMutation } from "../../services/transaction.api";
 import { useCreateApprovalMutation } from "../../services/approval.api";
+import { useGetAllUsersQuery } from "../../services/user.api"; // Import the hook for fetching all users
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { pageAnimation, textAnimation, formVariants, inputVariants, buttonVariants } from "../../animation";
 
+// Define schema using Yup
 const schema = yup.object({
   amount: yup.number().required("Amount is required").positive("Amount must be positive"),
   type: yup.string().oneOf(["DEPOSIT", "TRANSFER", "WITHDRAWAL"]).required("Transaction type is required"),
@@ -35,6 +35,8 @@ const TransactionForm: React.FC = () => {
   const [createTransaction, { isLoading }] = useCreateTransactionMutation();
   const [createApproval] = useCreateApprovalMutation();
 
+  const { data: users, isLoading: usersLoading } = useGetAllUsersQuery(); // Fetch all users
+
   const {
     register,
     handleSubmit,
@@ -43,6 +45,9 @@ const TransactionForm: React.FC = () => {
   } = useForm<ITransactionForm>({
     resolver: yupResolver(schema),
   });
+
+  // Filter out the logged-in user from the list of users
+  const filteredUsers = users?.data?.filter((user) => user._id !== userId) || [];
 
   const onSubmit: SubmitHandler<ITransactionForm> = async (data) => {
     try {
@@ -62,7 +67,7 @@ const TransactionForm: React.FC = () => {
       const approvalData = {
         txnId: createdTransaction.data._id,
         userId: userId,
-        status: 'PENDING',
+        status: "PENDING",
       };
 
       await createApproval(approvalData).unwrap();
@@ -83,8 +88,6 @@ const TransactionForm: React.FC = () => {
           sx={{ 
             textAlign: "center", 
             padding: 3, 
-            backgroundColor: isDarkMode ? "#1e1e1e" : "#fff",
-            color: isDarkMode ? "#fff" : "#000"
           }}
         >
           <motion.div variants={textAnimation}>
@@ -110,19 +113,6 @@ const TransactionForm: React.FC = () => {
                 {...register("amount")}
                 error={!!errors.amount}
                 helperText={errors.amount?.message}
-                sx={{
-                  input: { color: isDarkMode ? "#fff" : "#000" },
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: isDarkMode ? "#333" : "#fff",
-                    "& fieldset": { borderColor: isDarkMode ? "#777" : "#ccc" },
-                    "&:hover fieldset": { borderColor: isDarkMode ? "#bbb" : "#333" },
-                    "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-                  },
-                  "& .MuiFormLabel-root": {
-                    color: isDarkMode ? "#bbb" : "#666",
-                    "&.Mui-focused": { color: "#1976D2" },
-                  },
-                }}
               />
             </motion.div>
 
@@ -136,17 +126,6 @@ const TransactionForm: React.FC = () => {
                 {...register("type")}
                 error={!!errors.type}
                 helperText={errors.type?.message}
-                sx={{
-                  backgroundColor: isDarkMode ? "#333" : "#fff",
-                  "& .MuiInputBase-root": {
-                    color: isDarkMode ? "#fff" : "#000",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: isDarkMode ? "#777" : "#ccc" },
-                    "&:hover fieldset": { borderColor: isDarkMode ? "#bbb" : "#333" },
-                    "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-                  },
-                }}
               >
                 <MenuItem value="DEPOSIT">Deposit</MenuItem>
                 <MenuItem value="TRANSFER">Transfer</MenuItem>
@@ -154,26 +133,28 @@ const TransactionForm: React.FC = () => {
               </TextField>
             </motion.div>
 
+            {/* Receiver ID Dropdown */}
             <motion.div variants={inputVariants}>
               <TextField
-                label="Receiver ID"
-                type="text"
+                label="Receiver"
+                select
                 fullWidth
                 variant="outlined"
                 margin="normal"
                 {...register("receiverId")}
                 error={!!errors.receiverId}
                 helperText={errors.receiverId?.message}
-                sx={{
-                  input: { color: isDarkMode ? "#fff" : "#000" },
-                  backgroundColor: isDarkMode ? "#333" : "#fff",
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: isDarkMode ? "#777" : "#ccc" },
-                    "&:hover fieldset": { borderColor: isDarkMode ? "#bbb" : "#333" },
-                    "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-                  },
-                }}
-              />
+              >
+                {usersLoading ? (
+                  <MenuItem disabled>Loading...</MenuItem>
+                ) : (
+                  filteredUsers.map((user) => (
+                    <MenuItem key={user._id} value={user._id}>
+                      {user.name}
+                    </MenuItem>
+                  ))
+                )}
+              </TextField>
             </motion.div>
 
             <motion.div variants={inputVariants}>
@@ -186,17 +167,6 @@ const TransactionForm: React.FC = () => {
                 {...register("isInternational")}
                 error={!!errors.isInternational}
                 helperText={errors.isInternational?.message}
-                sx={{
-                  backgroundColor: isDarkMode ? "#333" : "#fff",
-                  "& .MuiInputBase-root": {
-                    color: isDarkMode ? "#fff" : "#000",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: isDarkMode ? "#777" : "#ccc" },
-                    "&:hover fieldset": { borderColor: isDarkMode ? "#bbb" : "#333" },
-                    "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-                  },
-                }}
               >
                 <MenuItem value={true}>Yes</MenuItem>
                 <MenuItem value={false}>No</MenuItem>

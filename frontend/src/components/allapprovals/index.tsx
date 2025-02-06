@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 import { CheckCircle, Cancel, AccountBalanceWallet } from "@mui/icons-material";
 
 const ApprovalPage: React.FC = () => {
-  const { data: approvals, isLoading } = useGetAllApprovalsQuery();
+  const { data: approvals, isLoading,refetch } = useGetAllApprovalsQuery();
   const [checkBalance] = useCheckBalanceMutation();
   const [updateApproval] = useUpdateApprovalMutation();
   const [updateTransaction] = useUpdateTransactionMutation();
@@ -46,6 +46,7 @@ const ApprovalPage: React.FC = () => {
       await updateApproval({ id: approvalId, status: "APPROVED" }).unwrap();
       await updateTransaction({ id: txnId, status: "APPROVED" }).unwrap();
       toast.success("Transaction Approved!");
+      refetch();
     } catch (error) {
       toast.error("Failed to approve the transaction!");
     }
@@ -56,6 +57,7 @@ const ApprovalPage: React.FC = () => {
       await updateApproval({ id: approvalId, status: "REJECTED" }).unwrap();
       await updateTransaction({ id: txnId, status: "REJECTED" }).unwrap();
       toast.success("Transaction Rejected!");
+      refetch();
     } catch (error) {
       toast.error("Failed to reject the transaction!");
     }
